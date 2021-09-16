@@ -12,6 +12,7 @@ Pulling new listings for all six major Metropolitan areas
 
 from urllib.request import urlopen, Request
 from bs4 import BeautifulSoup
+import re
 
 # Toronto
 
@@ -32,8 +33,12 @@ soup = BeautifulSoup(html.read(), 'html.parser')
 
 listing = soup.findAll('div', 'item-right-cnt')
 
+
 for item in listing:
-    address = item.find('div',"address-container")
+    address = item.find('div',"address-container").text
     price = item.find("div", "price").get_text()
-        print(price)
-    
+    address = re.sub(' +', ' ', address)
+    price = re.sub(' +', ' ', price)
+    print(address)
+    print(price)
+    # if address = "No address available" remove item from list
